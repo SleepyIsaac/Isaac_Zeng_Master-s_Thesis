@@ -1,5 +1,6 @@
 import pandas as pd
 import shutil
+import os
 
 long_unique = pd.read_csv('pair_long.csv')
 check_sheet = pd.read_csv('Meningioma Seg Check.csv')
@@ -19,6 +20,9 @@ ori_long = long_unique['file_name'].tolist()
 
 ori_long = [str(i).replace('_out_orig', '') for i in ori_long]
 ori_long = [str(i).replace('_out', '') for i in ori_long]
+
+pair_long = [i+'.nii.gz' for i in pair_long]
+pair_check = [i+'.nii.gz' for i in pair_check]
 
 from collections import defaultdict
 
@@ -54,3 +58,4 @@ for file in files:
         base = file.replace("_t1.nii.gz", "")
         if base + "_t0.nii.gz" not in files:
             os.remove(os.path.join(dst, file))
+
