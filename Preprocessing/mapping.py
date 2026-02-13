@@ -7,6 +7,7 @@ check_sheet = pd.read_csv('Meningioma Seg Check.csv')
 check_sheet = check_sheet.iloc[:51]
 check_sheet['Original File'] = check_sheet['Original File'].str.extract(r'(.*?\d{14}_\d+)', expand=False)
 check_sheet['Original File'] = check_sheet['Original File'] + ".nii.gz"
+check_sheet = check_sheet[~check_sheet['Comment'].str.lower().str.contains('delete|do not include', na=False)]
 
 long_unique['file_name'] = long_unique['file_name'].str.extract(r'(.*?\d{14}_\d+)', expand=False)
 long_unique['file_name'] = long_unique['file_name'] + ".nii.gz"
