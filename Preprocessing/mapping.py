@@ -39,3 +39,16 @@ for ori_file in map_dict:
         src = f"/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original/{ori_file}"
         dst = f"/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_corrected/{file}"
         shutil.copy(src, dst)
+
+dst = "/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_corrected/"
+files = os.listdir(dst)
+
+for file in files:
+    try:
+        base = file.split('_t0')[0]
+        if base+'_t1.nii.gz' not in files:
+            os.remove(os.path.join(dst, file))
+    except:
+        base = file.split('_t1')[0]
+        if base+'_t0.nii.gz' not in files:
+            os.remove(os.path.join(dst, file))
