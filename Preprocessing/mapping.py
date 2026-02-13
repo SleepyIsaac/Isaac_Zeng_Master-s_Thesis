@@ -43,12 +43,14 @@ for ori_file in map_dict:
 dst = "/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_corrected/"
 files = os.listdir(dst)
 
+
 for file in files:
-    try:
-        base = file.split('_t0')[0]
-        if base+'_t1.nii.gz' not in files:
+    if file.endswith("_t0.nii.gz"):
+        base = file.replace("_t0.nii.gz", "")
+        if base + "_t1.nii.gz" not in files:
             os.remove(os.path.join(dst, file))
-    except:
-        base = file.split('_t1')[0]
-        if base+'_t0.nii.gz' not in files:
+
+    elif file.endswith("_t1.nii.gz"):
+        base = file.replace("_t1.nii.gz", "")
+        if base + "_t0.nii.gz" not in files:
             os.remove(os.path.join(dst, file))
