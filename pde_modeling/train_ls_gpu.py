@@ -113,7 +113,6 @@ def main():
             return d.astype(np.float32)
 
         def normals_from_sdf(phi_brain: np.ndarray, spacing):
-            # 这里按你 ls_pde.py 的 forward+backward diff 风格
             def fwd(a, ax, h): return (np.roll(a, -1, axis=ax) - a) / h
 
             def bwd(a, ax, h): return (a - np.roll(a, 1, axis=ax)) / h
