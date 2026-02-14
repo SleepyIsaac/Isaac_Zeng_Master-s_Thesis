@@ -6,12 +6,12 @@ long_unique = pd.read_csv('pair_long.csv')
 check_sheet = pd.read_csv('Meningioma Seg Check.csv')
 
 check_sheet = pd.concat([
+    check_sheet.iloc[:51],
     check_sheet.iloc[108:110],
     check_sheet.iloc[400:406]
 ], ignore_index=True)
 check_sheet['Original File'] = check_sheet['Original File'].str.extract(r'(.*?\d{14}_\d+)', expand=False)
 check_sheet['Original File'] = check_sheet['Original File'] + ".nii.gz"
-
 check_sheet = check_sheet[~check_sheet['Comment'].str.lower().str.contains('delete|do not include', na=False)]
 
 long_unique['file_name'] = long_unique['file_name'].str.extract(r'(.*?\d{14}_\d+)', expand=False)
@@ -45,7 +45,7 @@ for file_check, pair_id_check in zip(ori_check, pair_check):
 for ori_file in map_dict:
     for file in map_dict[ori_file]:
         src = f"/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original/{ori_file}"
-        dst = f"/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_mid{file}"
+        dst = f"/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_corrected/{file}"
         shutil.copy(src, dst)
 
 dst = "/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/original_corrected/"
@@ -62,4 +62,3 @@ for file in files:
         base = file.replace("_t1.nii.gz", "")
         if base + "_t0.nii.gz" not in files:
             os.remove(os.path.join(dst, file))
-
