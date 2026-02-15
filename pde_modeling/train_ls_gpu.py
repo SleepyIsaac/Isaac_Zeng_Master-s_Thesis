@@ -14,8 +14,8 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 # ---------------- CONFIG ----------------
-TUMOR_DIR = Path("/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/tumor_seg_nii")
-BRAIN_DIR = Path("/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/brain_masks")
+TUMOR_DIR = Path("/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg")
+BRAIN_DIR = Path("/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/brain_seg")
 
 
 # Regex to parse tumor/brain filenames
@@ -63,7 +63,7 @@ def find_cases():
             print(f"[WARN] Missing brain mask for {name}, skip")
             continue
         # optional Δt
-        df_info = pd.read_csv('/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/MRI_Info_clean.csv')
+        df_info = pd.read_csv('/home/zengy2/isilon/Isaac/MRI_data/Clinic/pairs_long.csv')
         # dt_path = TUMOR_DIR / name.replace("_t0.nii.gz", "_dt.txt")
         # delta_t = None
         # if dt_path.exists():
@@ -73,7 +73,7 @@ def find_cases():
         #         pass
 
         try:
-            delta_t = float(df_info.loc[df_info['pair'] == name.split("_t0.nii.gz")[0], 'time_gap (days)'])
+            delta_t = float(df_info.loc[df_info['pair_id'] == name.split("_t0.nii.gz")[0], 'days_diff'])
         except:
             pass
 
