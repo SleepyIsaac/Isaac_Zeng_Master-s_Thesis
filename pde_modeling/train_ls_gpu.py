@@ -75,7 +75,7 @@ def find_cases():
         try:
             delta_t = float(df_info.loc[df_info['pair_id'] == name.split("_t0.nii.gz")[0], 'days_diff'])
         except:
-            pass
+            delta_t = 30
 
         cases.append(dict(
             t0=t0_path, t1=t1_path,
@@ -204,7 +204,7 @@ def main():
                 t_final=float(t_final),
                 v0=v0, alpha=alpha, sigma_mm=sigma_mm,
                 a_parallel=a_par, a_perp=a_perp,
-                reinit_every=10,
+                reinit_every=50,
             )
 
             d = dice(S1_pred, C["S1"])
@@ -276,7 +276,7 @@ def main():
             sigma_mm=theta_best[2],
             a_parallel=theta_best[3],
             a_perp=theta_best[4],
-            reinit_every=10,
+            reinit_every=50,
         )
 
         # save mask
