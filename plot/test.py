@@ -61,18 +61,22 @@ cases = [
     {
         "name": "Case1",
         "t0_mri": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/mri/patient_25_pair1_t0.nii.gz",
-        "t0_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_25_pair1_t0.nii.gz"
+        "t0_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_25_pair1_t0.nii.gz",
         "t1_mri": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/mri/patient_25_pair1_t1.nii.gz",
         "t1_true_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_25_pair1_t1.nii.gz",
-        "t1_pred_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/predictions_test/patient_25_t1.nii.gz",
+        "t1_pred_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/predictions_test/patient_25_pair1_pred_t1.nii.gz",
+        "plain": "axial",
+        "idx": False,
     },
     {
         "name": "Case2",
         "t0_mri": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/mri/patient_31_pair1_t0.nii.gz",
-        "t0_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_31_pair1_t0.nii.gz"
+        "t0_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_31_pair1_t0.nii.gz",
         "t1_mri": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/mri/patient_31_pair1_t1.nii.gz",
         "t1_true_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/registered/tumor_seg/patient_31_pair1_t1.nii.gz",
-        "t1_pred_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/predictions_test/patient_31_t1.nii.gz",
+        "t1_pred_tumor": "I:/Isaac/MRI_data/Clinic/Simulation/data_T1/predictions_test/patient_31_pair1_pred_t1.nii.gz",
+        "plain": "coronal",
+        "idx": False,
     },
 ]
 
@@ -144,18 +148,23 @@ fig, axes = plt.subplots(
 
 for r, case in enumerate(cases):
 
+    # PLANE = case['plain']
+
     t0_mri  = to_canonical(nib.load(case["t0_mri"]))
     t0_msk  = to_canonical(nib.load(case["t0_tumor"]))
     t1_mri  = to_canonical(nib.load(case["t1_mri"]))
     t1_true = to_canonical(nib.load(case["t1_true_tumor"]))
     t1_pred = to_canonical(nib.load(case["t1_pred_tumor"]))
 
-    if (t1_true.get_fdata() > 0.5).any():
-        idx = best_index_from_mask(t1_true, PLANE)
-    elif (t1_pred.get_fdata() > 0.5).any():
-        idx = best_index_from_mask(t1_pred, PLANE)
+    if case['idx']:
+        idx = case['idx']
     else:
-        idx = best_index_from_mask(t0_msk, PLANE)
+        if (t1_true.get_fdata() > 0.5).any():
+            idx = best_index_from_mask(t1_true, PLANE)
+        elif (t1_pred.get_fdata() > 0.5).any():
+            idx = best_index_from_mask(t1_pred, PLANE)
+        else:
+            idx = best_index_from_mask(t0_msk, PLANE)
 
     # ========== Col 1: t0 + t0 tumor ==========
     mri_sl, aspect = get_slice_2d(t0_mri, PLANE, idx)
@@ -194,5 +203,4 @@ for rr in range(2):
 
 plt.subplots_adjust(left=0.06, right=1, top=0.95, bottom=0)
 plt.savefig("tumor_segmentation_2x3.png", dpi=600, facecolor="black")
-plt.close(fig)
-
+plt.show()
