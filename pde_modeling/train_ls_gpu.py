@@ -72,10 +72,7 @@ def find_cases():
         #     except Exception:
         #         pass
 
-        try:
-            delta_t = float(df_info.loc[df_info['pair_id'] == name.split("_t0.nii.gz")[0], 'days_diff'])
-        except:
-            delta_t = 30
+        delta = 30
 
         cases.append(dict(
             t0=t0_path, t1=t1_path,
@@ -281,7 +278,7 @@ def main():
 
         # save mask
         pred_img = nib.Nifti1Image(S1_pred.astype(np.uint8), C["affine"])
-        save_path = PRED_DIR / f"{C['name']}_pred_t1.nii.gz"
+        save_path = PRED_DIR / f"{C['name']}_pred_t1_2.nii.gz"
         nib.save(pred_img, str(save_path))
         print(f"Saved prediction: {save_path}")
 
