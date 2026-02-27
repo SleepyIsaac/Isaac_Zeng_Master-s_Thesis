@@ -24,7 +24,7 @@ TEST_NAMES = {
     "patient_31_pair1",
 }
 
-# Where to save best-test predictions (same as your original)
+# Where to save best-test predictions
 PRED_DIR = Path("/home/zengy2/isilon/Isaac/MRI_data/Clinic/Simulation/data_T1/predictions_test")
 
 # NEW: Where to save *every* Optuna trial (params + metrics; optionally masks)
@@ -40,7 +40,7 @@ SAVE_BEST_SO_FAR_MASKS = True
 # Summary CSV (one row per trial) + per-trial per-case CSV
 SUMMARY_CSV = TRIALS_DIR / "trials_summary.csv"
 
-# Regex (not strictly needed, kept from your original)
+# Regex
 MASK_PAT = re.compile(r"^(?P<patient>.+?)_pair(?P<pair>\d+)_t(?P<t>[01])\.nii\.gz$")
 # ===================================================================
 
@@ -75,7 +75,7 @@ def hd95_voxel(a: np.ndarray, b: np.ndarray) -> float:
     da = distance_transform_edt(1 - a)
     db = distance_transform_edt(1 - b)
 
-    # "Surface" approximations (kept as-is from your original logic)
+    # "Surface" approximations
     sa = (a.astype(bool) & (distance_transform_edt(a) == 0))
     sb = (b.astype(bool) & (distance_transform_edt(b) == 0))
 
@@ -102,8 +102,6 @@ def find_cases():
             print(f"[WARN] Missing brain mask for {name}, skip")
             continue
 
-        # Optional delta_t: you currently hardcode 30 in your pasted code
-        # Replace this with reading your CSV if you want true delta_t per pair.
         delta_t = 30.0
 
         cases.append(
