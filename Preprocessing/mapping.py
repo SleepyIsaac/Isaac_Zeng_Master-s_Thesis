@@ -6,7 +6,7 @@ long_unique = pd.read_csv('pair_long.csv')
 check_sheet = pd.read_csv('Meningioma Seg Check.csv')
 
 check_sheet = pd.concat([
-    check_sheet.iloc[:51],
+    check_sheet.iloc[:67],
     check_sheet.iloc[108:110],
     check_sheet.iloc[400:406]
 ], ignore_index=True)
